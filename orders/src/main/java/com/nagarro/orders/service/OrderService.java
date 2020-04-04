@@ -1,8 +1,5 @@
 package com.nagarro.orders.service;
 
-import java.util.List;
-
-import com.nagarro.orders.model.Order;
 import com.nagarro.orders.model.OrdersList;
 
 /**

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,6 @@ import com.nagarro.aggregator.service.AggregatorService;
  */
 @RestController
 @RequestMapping(value = "/orderdetails")
-@EnableCircuitBreaker
 public class AggregatorController {
 
 	@Resource(name = "restTemp")

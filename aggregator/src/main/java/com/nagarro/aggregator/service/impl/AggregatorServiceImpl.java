@@ -6,10 +6,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +29,11 @@ public class AggregatorServiceImpl implements AggregatorService {
 	@Value("${server.port}")
 	private int port;
 
-	@Autowired
-	LoadBalancerClient loadBalancerClient;
+	@Value("${user.server.address}")
+	private String userURL;
+
+	@Value("${orders.server.address}")
+	private String ordersURL;
 
 	private static final Logger logger = LoggerFactory.getLogger(AggregatorServiceImpl.class);
 
@@ -41,7 +41,6 @@ public class AggregatorServiceImpl implements AggregatorService {
 	private RestTemplate restTemplate;
 
 	@Bean
-	@LoadBalanced
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
@@ -49,8 +48,8 @@ public class AggregatorServiceImpl implements AggregatorService {
 	@Override
 	public UserDetails getDetails(String userId) {
 		logger.info("In AggregatorServiceImpl  -->>  getDetails Method");
-		String baseUserUrl = loadBalancerClient.choose("user").getUri().toString() + "/user";
-		logger.info(baseUserUrl.toString());
+		String baseUserUrl = userURL + "/user";
+		logger.info("Base User URL : " + baseUserUrl.toString());
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<User> userResponse = null;
 
@@ -64,8 +63,8 @@ public class AggregatorServiceImpl implements AggregatorService {
 			System.out.println(ex);
 		}
 
-		String baseOrdersUrl = loadBalancerClient.choose("orders").getUri().toString() + "/orders";
-		logger.info(baseOrdersUrl.toString());
+		String baseOrdersUrl = ordersURL + "/orders";
+		logger.info("Base Orders URL : " + baseOrdersUrl.toString());
 		ResponseEntity<OrdersList> ordersResponse = null;
 
 		try {

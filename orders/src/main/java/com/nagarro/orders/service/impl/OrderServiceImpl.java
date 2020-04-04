@@ -4,13 +4,8 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.nagarro.orders.dao.OrdersDAO;
 import com.nagarro.orders.model.OrdersList;
@@ -30,18 +25,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Value("${server.port}")
 	private int port;
-
-	@Resource
-	private RestTemplate restTemplate2;
-
-	@Autowired
-	LoadBalancerClient loadBalancerClient;
-
-	@Bean
-	@LoadBalanced
-	public RestTemplate restTemplate2() {
-		return new RestTemplate();
-	}
 
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
