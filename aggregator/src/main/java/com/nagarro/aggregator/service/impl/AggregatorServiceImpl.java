@@ -57,7 +57,7 @@ public class AggregatorServiceImpl implements AggregatorService {
 		try {
 			UriComponentsBuilder userBuilder = UriComponentsBuilder.fromUriString(baseUserUrl).queryParam("userId",
 					userId);
-			logger.info(userBuilder.toString());
+			logger.info("userBuilder : " + userBuilder.toUriString());
 			userResponse = restTemplate.exchange(userBuilder.buildAndExpand().toUri(), HttpMethod.GET, null,
 					User.class);
 		} catch (Exception ex) {
@@ -71,7 +71,7 @@ public class AggregatorServiceImpl implements AggregatorService {
 		try {
 			UriComponentsBuilder ordersBuilder = UriComponentsBuilder.fromUriString(baseOrdersUrl).queryParam("userId",
 					userId);
-			logger.info(ordersBuilder.toString());
+			logger.info("ordersBuilder : " + ordersBuilder.toUriString());
 			ordersResponse = restTemplate.exchange(ordersBuilder.buildAndExpand().toUri(), HttpMethod.GET, null,
 					OrdersList.class);
 		} catch (Exception ex) {
