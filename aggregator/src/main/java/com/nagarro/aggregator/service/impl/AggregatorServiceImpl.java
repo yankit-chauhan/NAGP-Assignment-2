@@ -1,5 +1,6 @@
 package com.nagarro.aggregator.service.impl;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.nagarro.aggregator.model.OrdersList;
+import com.nagarro.aggregator.model.Order;
 import com.nagarro.aggregator.model.User;
 import com.nagarro.aggregator.model.UserDetails;
 import com.nagarro.aggregator.service.AggregatorService;
@@ -66,14 +67,14 @@ public class AggregatorServiceImpl implements AggregatorService {
 
 		String baseOrdersUrl = ordersURL + "/orders";
 		logger.info("Base Orders URL : " + baseOrdersUrl);
-		ResponseEntity<OrdersList> ordersResponse = null;
+		ResponseEntity<Order[]> ordersResponse = null;
 
 		try {
 			UriComponentsBuilder ordersBuilder = UriComponentsBuilder.fromUriString(baseOrdersUrl).queryParam("userId",
 					userId);
 			logger.info("ordersBuilder : " + ordersBuilder.toUriString());
 			ordersResponse = restTemplate.exchange(ordersBuilder.buildAndExpand().toUri(), HttpMethod.GET, null,
-					OrdersList.class);
+					Order[].class);
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
@@ -91,15 +92,15 @@ public class AggregatorServiceImpl implements AggregatorService {
 	 * @param ordersResponse
 	 * @return
 	 */
-	private UserDetails getUserDetails(ResponseEntity<User> userResponse, ResponseEntity<OrdersList> ordersResponse) {
+	private UserDetails getUserDetails(ResponseEntity<User> userResponse, ResponseEntity<Order[]> ordersResponse) {
 		UserDetails details;
 		if (Objects.nonNull(ordersResponse) && Objects.nonNull(userResponse)) {
 			details = new UserDetails(userResponse.getBody(),
-					Objects.nonNull(ordersResponse.getBody()) ? ordersResponse.getBody().getOrders()
+					Objects.nonNull(ordersResponse.getBody()) ? Arrays.asList(ordersResponse.getBody())
 							: Collections.emptyList());
 		} else if (Objects.nonNull(ordersResponse)) {
 			details = new UserDetails(null,
-					Objects.nonNull(ordersResponse.getBody()) ? ordersResponse.getBody().getOrders()
+					Objects.nonNull(ordersResponse.getBody()) ? Arrays.asList(ordersResponse.getBody())
 							: Collections.emptyList());
 		} else if (Objects.nonNull(userResponse)) {
 			details = new UserDetails(userResponse.getBody(), Collections.emptyList());

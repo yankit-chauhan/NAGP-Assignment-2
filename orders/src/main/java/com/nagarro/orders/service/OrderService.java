@@ -1,6 +1,8 @@
 package com.nagarro.orders.service;
 
-import com.nagarro.orders.model.OrdersList;
+import java.util.List;
+
+import com.nagarro.orders.model.Order;
 
 /**
  * Interface to provide various order services.
@@ -16,6 +18,6 @@ public interface OrderService {
 	 * @param userId the user id
 	 * @return list of orders
 	 */
-	OrdersList getOrdersForUser(String userId);
+	List<Order> getOrdersForUser(String userId);
 
 }
